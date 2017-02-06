@@ -1,0 +1,315 @@
+#include <iostream>
+using namespace std;
+#include <cmath>
+
+
+class TAInt
+{
+public:
+	int number;
+	TAInt(const int& value)
+	{
+		number=value;
+	}
+	TAInt()
+	{
+	}
+};
+class TADouble
+{
+public:
+	double number;
+	TADouble(const double& value)
+	{
+		number=value;
+	}
+	TADouble ()
+	{
+	}
+};
+class TABool
+{
+public:
+	bool number;
+	TABool(const bool& value)
+	{
+		number=value;
+	}
+	TABool ()
+	{
+		/*number = true;*/
+	}
+};
+class TANot
+{
+public:
+	bool answer;
+	TANot (const bool&val)
+	{
+		if(val==true)
+			answer = false;
+		else
+			answer = true;
+		cout<<answer<<endl;
+	}
+};
+class TAMinus
+{
+public:
+	int answerint ;
+	double answerdouble;
+	TAMinus (const int&val)
+	{
+		answerint = -val;
+		cout<<answerint<<endl;
+	}
+	TAMinus (const double&val)
+	{
+		answerdouble = -val;
+		cout<<answerdouble<<endl;
+	}
+	TAMinus (const int&val, const int& val1)
+	{
+		answerint = val-val1;
+		cout<<answerint<<endl;
+	}
+	TAMinus (const double&val, const double& val1)
+	{
+		answerdouble = val-val1;
+		cout<<answerdouble<<endl;
+	}
+};
+class TACeiling
+{
+public:
+	int ceil;
+	TACeiling (const int&val)
+	{
+		ceil = val;
+		cout<<ceil<<endl;
+	}
+	TACeiling (const double& vall)
+	{
+		int x = static_cast <int> (vall);
+		double y = static_cast <double> (x);
+		if ( (vall - y ) != 0.0)
+			ceil = x+1;
+		else
+			ceil = x;
+		cout<<ceil<<endl;
+	}
+};
+class TAFloor
+{
+public:
+	int flo;
+	TAFloor (const int&val)
+	{
+		flo = val;
+		cout<<flo<<endl;
+	}
+	TAFloor (const double& vall)
+	{
+		flo = static_cast <int> (vall);
+		cout<<flo<<endl;
+	}
+};
+class TAAnd
+{
+public:
+	bool answer;
+	TAAnd (const bool& val, const bool& val1)
+	{
+		if( val== true && val1== true)
+			answer = true;
+		else
+			answer = false;
+		cout<<answer<<endl;
+	}
+};
+class TAOr
+{
+public:
+	bool answer;
+	TAOr (const bool& val, const bool& val1)
+	{
+		if( val== false && val1== false)
+			answer = false;
+		else
+			answer = true;
+		cout<<answer<<endl;
+	}
+};
+class TAXor
+{
+public:
+	bool answer;
+	TAXor (const bool& val, const bool& val1)
+	{
+		if( val== true && val1== false)
+			answer = true;
+		else if (val == false && val1 == true)
+			answer = true;
+		else
+			answer = false;
+		cout<<answer<<endl;
+	}
+};
+class TAImplies
+{
+public:
+	bool answer;
+	TAImplies (const bool& val, const bool& val1)
+	{
+		if( val== true && val1== true)
+			answer = true;
+		else if (val == false && val1 == true)
+			answer = true;
+		else
+			answer = false;
+		cout<<answer<<endl;
+	}
+};
+class TAPlus
+{
+public:
+	int answerint;
+	double answerdouble;
+	TAPlus (const int&val, const int& val1)
+	{
+		answerint = val+val1;
+		cout<<answerint<<endl;
+	}
+	TAPlus (const double&val, const double& val1)
+	{
+		answerdouble = val+val1;
+		cout<<answerdouble<<endl;
+	}
+};
+class TAMultiply//consistent with the example only same type can take
+{
+public:
+	double answerdouble;
+	TAMultiply (const int&val, const int& val1)
+	{
+		answerdouble = val*val1;
+		cout<<answerdouble<<endl;
+	}
+	TAMultiply (const double&val, const double& val1)
+	{
+		answerdouble = val*val1;
+		cout<<answerdouble<<endl;
+	}
+};
+class TADivide
+{
+public:
+	double answerdouble ;
+	TADivide (const int&val, const int& val1)
+	{
+		answerdouble = static_cast <double> (val)/static_cast <double> (val1);
+		cout<<answerdouble<<endl;
+	}
+	TADivide (const double&val, const double& val1)
+	{
+		answerdouble = val/val1;
+		cout<<answerdouble<<endl;
+	}
+};
+class TALessThan
+{
+public:
+	bool answer;
+	TALessThan (const int&val, const int& val1)
+	{
+		answer = val<val1;
+		cout<<answer<<endl;
+	}
+	TALessThan (const double&val, const double& val1)
+	{
+		answer = val<val1;
+		cout<<answer<<endl;
+	}
+};
+class TAMoreThan
+{
+public:
+	bool answer;
+	TAMoreThan(const int&val, const int& val1)
+	{
+		answer = val>val1;
+		cout<<answer<<endl;
+	}
+	TAMoreThan (const double&val, const double& val1)
+	{
+		answer = val>val1;
+		cout<<answer<<endl;
+	}
+};
+class TAEqual
+{
+public:
+	bool answer;
+	TAEqual (const int&val, const int& val1)
+	{
+		answer = val==val1;
+		cout<<answer<<endl;
+	}
+	TAEqual (const double&val, const double& val1)
+	{
+		answer = val==val1;
+		cout<<answer<<endl;
+	}
+};
+//template <class elem, class elem1>
+//class pair
+//{
+//public:
+//	elem first1;
+//	elem1 second1;
+//	pair(elem one, elem1 two)
+//	{
+//		first1 = one;
+//		second1 = two;
+//	}
+//	elem first()
+//	{
+//		return first1;
+//	}
+//	elem1 second()
+//	{
+//		return second1;
+//	}
+//};
+//template <class elem>
+//class arrray
+//{
+//public:
+//	elem first1[100];
+//	int size;
+//	arrray(const elem& one[], const int& two)
+//	{
+//		first1 = one;
+//		size = two;
+//	}
+//	int size()
+//	{
+//		return size;
+//	}
+//	elem elementi(const int& i)
+//	{
+//		return first1[i];
+//	}
+//};
+int main()
+{
+	TAInt x;
+	TADouble d;
+	TACeiling y(d.number);
+	TABool b;
+	TALessThan t1(x.number,y.ceil);
+	TAAnd t2(b.number,t1.answer);	//1 is for true and 0 is for false
+	
+
+	return 0;
+}
