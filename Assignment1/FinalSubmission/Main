@@ -1,0 +1,97 @@
+//Toufic Nouwayhed (student)
+#include <iostream>
+using namespace std;
+#include <cmath>
+#include <string>
+#include "Classes.h"
+
+int main()		//testing purposes
+{
+	/*TAInt x("x"),z;
+	TADouble d("d"),f;
+	f.set(1.3);
+	TAFloor t10(f);
+	x.set(-3);
+	d.set(1.5);
+	t10.evaluate();
+	t10.printState();
+	TAMinus t1(t10);
+	t1.evaluate();
+	t1.printState();*/
+	//TADivide t2(t1,t10);
+	//t2.evaluate();
+	//t2.printState();
+	//TACeiling y(d);
+	//TABool b("b"),g;
+	//b.set(false);
+	//g.set(true);
+	//TANot t2(b);
+	//t2.evaluate();
+	//t2.printState();
+	//TANot t3(t2);
+	//t3.evaluate();
+	//t3.printState();
+	//TALessThan t12(d,t2);
+	//TAAnd t4(b,t1);
+	//TAAnd t5(t1,g);
+	//TALessThan t1(x.number,y.ceil);
+	//TAAnd t2(b.number,t1.answer);	//1 is for true and 0 is for false
+
+ 	TABool b("b");
+	//TABool n;
+	//n.set(false);
+	TANot t123(b);
+	//t1.evaluate();
+	//t1.printState();
+	TANot t2(t123);
+	TANot t3(t2);
+	t3.list();
+	TAInt x,y;
+	TADouble z,v;
+	TADivide abudi (z,v);
+	//TAMinus rani (abudi);
+	//TADivide mimo (abudi,abudi);
+	//z.set(3.5);
+	//v.set(10.65);
+	//x.set(4);
+	//y.set(12);
+	//mimo.evaluate();
+	//mimo.printState();
+	//TALessThan ahu(x,y);
+	//TAImplies mhs (ahu,t2);
+	b.set(false);
+	cout<<endl;
+	//mhs.evaluate();
+	//mhs.printState();
+	cout<<endl;
+	//TANot abed(ahu);
+	//abed.evaluate();
+	//abed.printState();
+	cout<<endl;
+	//t123.evaluate();
+	//t123.printState();
+	t2.evaluate();
+	t2.printState();
+	//t1.list();
+	//t2.list();
+
+	//TAInt x("x");
+	//TADouble d("d");
+	//TACeiling y(d); // denotes y is the ceiling of d
+	//TABool b("b");
+	//TALessThan t1 (x,y); // denotes x < y
+	//TAAnd t2 (b, t1); // denotes b and t1
+	//t2.list();// should print: (& b (< x (ceiling d ) ) )
+	//x.set(5);
+	//d.set(2.3);
+	//b.set(true);
+	//t1.evaluate();
+	//t1.printState();// should print: false
+	//d.set(5.3);
+	//t1.evaluate();
+	//t1.printState();// should print: true
+
+
+
+	return 0;
+}//thank you and i hope u found the code to be good
