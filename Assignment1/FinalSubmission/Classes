@@ -1,0 +1,836 @@
+//Toufic Nouwayhed (student)
+#include <iostream>
+using namespace std;
+#include <cmath>
+#include <string>
+
+class TAInt
+{
+public:
+	int kinda;		//kinda to use in the abstract class (1 int, 2 double, 3 bool)
+	/*static*/ string name;
+	int numberInt;
+	TAInt(const string& value)
+	{
+		kinda = 1;
+		name=value;
+	}
+	TAInt()
+	{
+		name = "";
+	}
+	void setInt(const int& input)
+	{
+		numberInt = input;
+	}
+	void set(const int& input)
+	{
+		numberInt = input;
+	}
+	int evaluate ()		//used recursively to evaluate
+	{
+		return numberInt;
+	}
+	void list()			//did not finish implementing the list i did in bool here
+	{
+		cout<<name<<endl;
+	}
+};
+class TADouble
+{
+public:
+	int kinda;
+	/*static*/ string name;
+	double numberDouble;
+	TADouble(const string& value)
+	{
+		kinda = 2;
+		name=value;
+	}
+	TADouble ()
+	{
+		name = "";
+	}
+	void setDouble(const double& input)
+	{
+		numberDouble = input;
+	}
+	void set(const double input)
+	{
+		numberDouble = input;
+	}
+	virtual double evaluate ()
+	{
+		return numberDouble;
+	}
+	void list()
+	{
+		cout<<name<<endl;
+	}
+};
+class TABool
+{
+public:
+	int kinda;
+	string name;
+	bool number;
+	TABool( string value)
+	{
+		kinda = 3;
+		name=value;
+	}
+	TABool ()
+	{
+		name= "";
+		/*number = true;*/
+	}
+	void setBool (const bool& input)
+	{
+		number = input;
+	}
+	void set (const bool& input)
+	{
+		setBool( input);
+	}
+	virtual string list()
+	{
+		return name;
+	}
+	virtual bool evaluate() 
+	{
+		return number;
+	}
+};
+class TANot : public TABool
+{
+public:
+	//TABool answer;
+	TABool* input;
+	TANot (TANot &t)		//overloading the copy constructor
+	{
+		input = &t;
+	}
+	//void list()
+	//{
+	//	cout<<"NOT ";
+	//	if(answer.name != "")
+	//		cout<<answer.name<<endl;
+	//	else
+	//		answer.list();
+	//}
+	TANot ( TABool& val) 
+	{
+		input = &val;
+		//number = val.number;
+		/*number = !val.number;
+		input = &val;*/
+		//cout<<answer.number<<endl;
+	}
+	bool evaluate()
+	{
+		number =! input->evaluate();	//recursively call evaluate of each operand it ends at the primitive type (same for the rest of evaluates)
+		return number;
+		/*TABool k;
+		k = *input;*/
+
+		/*input->number = ! (input->number);*/
+		/*setBool(! k.number);
+		k.set(number);*/
+	}
+	void printState()
+	{
+		cout<<number<<endl;
+	}
+	string list() // i only implemented list for the TANot class the rest are the same
+	{				//same as evaluate recursive and ends at the primitive type.
+		string output = "(! " + input->list() + " )";
+		cout<<output<<endl;
+		return output;
+	}
+};
+class TAMinus : public TAInt , TADouble
+{
+public:
+	int typee;
+	TAInt* answerint1 ;
+	TAInt* answerint2 ;
+	TADouble* answerdouble1;
+	TADouble* answerdouble2;
+	TAMinus (TAMinus &t, TAMinus &tt)
+	{
+		typee = 4;
+		answerdouble1 = &t;
+		answerdouble2 = &tt;
+	}
+	TAMinus (TAMinus &t)
+	{
+		typee = 2;
+		answerdouble1 = &t;
+	}
+	TAMinus (TAInt& val)
+	{
+		typee = 1;
+		answerint1 = &val;
+		/*setInt(val.numberInt);
+		answerint1.set(numberInt);
+		setInt(0);
+		answerint2.set(numberInt);
+		answerdouble1.set(0.0);
+		answerdouble2.set(0.0);*/
+		//cout<<answerint.numberInt<<endl;
+	}
+	double evaluate()
+	{
+		if (typee == 1)
+		{
+			answerint1->numberInt = answerint1->evaluate();
+			numberInt = - answerint1->numberInt;
+			return static_cast <double> (numberInt);
+		}
+		else if (typee == 2)
+		{
+			answerdouble1->numberDouble = answerdouble1->evaluate();
+			numberDouble = - answerdouble1->numberDouble;
+			return numberDouble;
+		}
+		else if (typee == 3)
+		{
+			answerint1->numberInt = answerint1->evaluate();
+			answerint2->numberInt = answerint2->evaluate();
+			numberInt = answerint1->numberInt - answerint2->numberInt;
+			return static_cast <double> (numberInt);
+		}
+		else if (typee == 4)
+		{
+			answerdouble1->numberDouble = answerdouble1->evaluate();
+			answerdouble2->numberDouble = answerdouble2->evaluate();
+			numberDouble = answerdouble1->numberDouble - answerdouble2->numberDouble;
+			return numberDouble;
+		}
+		/*setInt(answerint2.numberInt - answerint1.numberInt);
+		answerint1.set(numberInt);
+		setDouble(answerdouble2.numberDouble - answerdouble1.numberDouble);
+		answerdouble1.set(numberDouble);*/
+	}
+	void printState()
+	{
+		if(typee == 1 || typee == 3)
+			cout<<numberInt<<endl;
+		else if(typee == 2 || typee == 4)
+			cout<<numberDouble<<endl;
+	}
+	TAMinus ( TADouble& val)
+	{
+		typee = 2;
+		answerdouble1 = &val;
+		/*setDouble(val.numberDouble);
+		answerdouble1.set(numberDouble);
+		setDouble(0.0);
+		answerdouble2.set(numberDouble);
+		answerint1.set(0);
+		answerint2.set(0);*/
+	}
+	TAMinus (TAInt& val, TAInt& val1)
+	{
+		typee = 3;
+		answerint1 = &val;
+		answerint2 = &val1;
+		/*setInt(val1.numberInt);
+		answerint1.set(numberInt);
+		setInt(val.numberInt);
+		answerint2.set(numberInt);
+		answerdouble1.set(0.0);
+		answerdouble2.set(0.0);*/
+	}
+	TAMinus (TADouble& val, TADouble& val1)
+	{
+		typee = 4;
+		answerdouble1 = &val;
+		answerdouble2 = &val1;
+		/*setDouble(val1.numberDouble);
+		answerdouble1.set(numberDouble);
+		setDouble(val.numberDouble);
+		answerdouble2.set(numberDouble);
+		answerint1.set(0);
+		answerint2.set(0);*/
+	}
+};
+class TACeiling : public TAInt
+{
+public:
+	TAInt ceil;
+	TACeiling (const TAInt& val)
+	{
+		ceil = val;
+	}
+	void evaluate ()
+	{
+		//setInt(ceil.numberInt);
+		//ceil.set(numberInt);
+	}
+	void printState()
+	{
+		cout<<ceil.numberInt<<endl;
+	}
+	TACeiling (const TADouble& vall)
+	{
+		int x = static_cast <int> (vall.numberDouble);
+		double y = static_cast <double> (x);
+		if ( (vall.numberDouble - y ) != 0.0)
+			setInt(x+1);
+		else
+			setInt(x);
+		ceil.set(numberInt);
+	}
+};
+class TAFloor : public TAInt
+{
+public:
+	TAInt flo;
+	TAFloor (const TAInt& val)
+	{
+		setInt(val.numberInt);
+		flo.set(numberInt);
+	}
+	void evaluate ()
+	{
+	}
+	void printState()
+	{
+		cout<<flo.numberInt<<endl;
+	}
+	TAFloor (const TADouble& vall)
+	{
+		setInt(static_cast <int> (vall.numberDouble));
+		flo.set(numberInt);
+	}
+};
+class TAAnd : public TABool
+{
+public:
+	TABool* answer1;
+	TABool* answer2;
+	TAAnd (TAAnd &t, TAAnd &tt)
+	{
+		answer1 = &t;
+		answer2 = &tt;
+	}
+	TAAnd ( TABool& val,  TABool& val1)
+	{
+		//cout<<val1.number<<endl;
+		answer1 = &val;
+		answer2 = &val1;
+	}
+	bool evaluate()
+	{
+		//number = answer1->evaluate() && answer2 ->evaluate();
+		answer1->number = answer1 -> evaluate();
+		answer2->number = answer2 -> evaluate();
+		if( answer1->number == true && answer2->number == true)
+			number = true;
+		else
+			number = false;
+		return number;
+	}
+	void printState()
+	{
+		cout<<number<<endl;
+	}
+};
+class TAOr : public TABool
+{
+public:
+	TABool* answer1;
+	TABool* answer2;
+	TAOr (TAOr &t, TAOr &tt)
+	{
+		answer1 = &t;
+		answer2 = &tt;
+	}
+	TAOr ( TABool& val,  TABool& val1)
+	{
+		//cout<<val1.number<<endl;
+		answer1 = &val;
+		answer2 = &val1;
+	}
+	bool evaluate()
+	{
+		//number = answer1->evaluate() || answer2 ->evaluate();
+		answer1->number = answer1 -> evaluate();
+		answer2->number = answer2 -> evaluate();
+		if( answer1->number == false && answer2->number == false)
+			number = false;
+		else
+			number = true;
+		return number;
+	}
+	void printState()
+	{
+		cout<<number<<endl;
+	}
+};
+class TAXor : public TABool
+{
+public:
+	TABool* answer1;
+	TABool* answer2;
+	TAXor (TAXor &t, TAXor &tt)
+	{
+		answer1 = &t;
+		answer2 = &tt;
+	}
+	TAXor ( TABool& val,  TABool& val1)
+	{
+		//cout<<val1.number<<endl;
+		answer1 = &val;
+		answer2 = &val1;
+	}
+	bool evaluate ()
+	{
+		answer1->number = answer1->evaluate();
+		answer2->number = answer2->evaluate();
+		if( answer1->number == true && answer2->number== false)
+			number = true;
+		else if (answer1->number == false && answer2->number == true)
+			number = true;
+		else
+			number = false;
+		return number;
+	}
+	void printState ()
+	{
+		cout<<number<<endl;
+	}
+};
+class TAImplies : public TABool
+{
+public:
+	TABool* answer1;
+	TABool* answer2;
+	TAImplies (TAImplies &t, TAImplies &tt)
+	{
+		answer1 = &t;
+		answer2 = &tt;
+	}
+	TAImplies ( TABool& val,  TABool& val1)
+	{
+		//cout<<val1.number<<endl;
+		answer1 = &val;
+		answer2 = &val1;
+	}
+	bool evaluate ()
+	{
+		answer1->number = answer1->evaluate();
+		answer2->number = answer2->evaluate();
+		if( answer1->number== true && answer2->number== false)
+			number = false;
+		else
+			number = true;
+		return number;
+	}
+	void printState ()
+	{
+		cout<<number<<endl;
+	}
+};
+class TAPlus : public TAInt , TADouble
+{
+public:
+	int typee;
+	TAInt* answerint1 ;
+	TAInt* answerint2 ;
+	TADouble* answerdouble1;
+	TADouble* answerdouble2;
+	TAPlus (TAPlus &t, TAPlus &tt)
+	{
+		typee = 2;
+		answerdouble1 = &t;
+		answerdouble2 = &tt;
+	}
+	double evaluate()
+	{
+		if (typee == 1)
+		{
+			answerint1->numberInt = answerint1->evaluate();
+			answerint2->numberInt = answerint2->evaluate();
+			numberInt = answerint1->numberInt + answerint2->numberInt;
+			return static_cast <double> (numberInt);
+		}
+		else if (typee == 2)
+		{
+			answerdouble1->numberDouble = answerdouble1->evaluate();
+			answerdouble2->numberDouble = answerdouble2->evaluate();
+			numberDouble = answerdouble1->numberDouble + answerdouble2->numberDouble;
+			return numberDouble;
+		}
+		/*setInt(answerint2.numberInt - answerint1.numberInt);
+		answerint1.set(numberInt);
+		setDouble(answerdouble2.numberDouble - answerdouble1.numberDouble);
+		answerdouble1.set(numberDouble);*/
+	}
+	void printState()
+	{
+		if(typee == 1)
+			cout<<numberInt<<endl;
+		else if(typee == 2 )
+			cout<<numberDouble<<endl;
+	}
+	TAPlus (TAInt& val, TAInt& val1)
+	{
+		typee = 1;
+		answerint1 = &val;
+		answerint2 = &val1;
+		/*setInt(val1.numberInt);
+		answerint1.set(numberInt);
+		setInt(val.numberInt);
+		answerint2.set(numberInt);
+		answerdouble1.set(0.0);
+		answerdouble2.set(0.0);*/
+	}
+	TAPlus (TADouble& val, TADouble& val1)
+	{
+		typee = 2;
+		answerdouble1 = &val;
+		answerdouble2 = &val1;
+		/*setDouble(val1.numberDouble);
+		answerdouble1.set(numberDouble);
+		setDouble(val.numberDouble);
+		answerdouble2.set(numberDouble);
+		answerint1.set(0);
+		answerint2.set(0);*/
+	}
+};
+class TAMultiply : public TAInt , TADouble
+{
+public:
+	int typee;
+	TAInt* answerint1 ;
+	TAInt* answerint2 ;
+	TADouble* answerdouble1;
+	TADouble* answerdouble2;
+	TAMultiply (TAMultiply &t, TAMultiply &tt)
+	{
+		typee = 2;
+		answerdouble1 = &t;
+		answerdouble2 = &tt;
+	}
+	double evaluate()
+	{
+		if (typee == 1)
+		{
+			answerint1->numberInt = answerint1->evaluate();
+			answerint2->numberInt = answerint2->evaluate();
+			numberInt = answerint1->numberInt * answerint2->numberInt;
+			return static_cast <double> (numberInt);
+		}
+		else if (typee == 2)
+		{
+			answerdouble1->numberDouble = answerdouble1->evaluate();
+			answerdouble2->numberDouble = answerdouble2->evaluate();
+			numberDouble = answerdouble1->numberDouble * answerdouble2->numberDouble;
+			return numberDouble;
+		}
+		/*setInt(answerint2.numberInt - answerint1.numberInt);
+		answerint1.set(numberInt);
+		setDouble(answerdouble2.numberDouble - answerdouble1.numberDouble);
+		answerdouble1.set(numberDouble);*/
+	}
+	void printState()
+	{
+		if(typee == 1)
+			cout<<numberInt<<endl;
+		else if(typee == 2 )
+			cout<<numberDouble<<endl;
+	}
+	TAMultiply (TAInt& val, TAInt& val1)
+	{
+		typee = 1;
+		answerint1 = &val;
+		answerint2 = &val1;
+		/*setInt(val1.numberInt);
+		answerint1.set(numberInt);
+		setInt(val.numberInt);
+		answerint2.set(numberInt);
+		answerdouble1.set(0.0);
+		answerdouble2.set(0.0);*/
+	}
+	TAMultiply (TADouble& val, TADouble& val1)
+	{
+		typee = 2;
+		answerdouble1 = &val;
+		answerdouble2 = &val1;
+		/*setDouble(val1.numberDouble);
+		answerdouble1.set(numberDouble);
+		setDouble(val.numberDouble);
+		answerdouble2.set(numberDouble);
+		answerint1.set(0);
+		answerint2.set(0);*/
+	}
+};
+class TADivide : public TAInt , TADouble
+{
+public:
+	int typee;
+	TAInt* answerint1 ;
+	TAInt* answerint2 ;
+	TADouble* answerdouble1;
+	TADouble* answerdouble2;
+	TADivide (TADivide &t, TADivide &tt)
+	{
+		typee = 2;
+		answerdouble1 = &t;
+		answerdouble2 = &tt;
+	}
+	double evaluate()
+	{
+		if (typee == 1)
+		{
+			answerint1->numberInt = answerint1->evaluate();
+			answerint2->numberInt = answerint2->evaluate();
+			numberInt = answerint1->numberInt / answerint2->numberInt;
+			return static_cast <double> (numberInt);
+		}
+		else if (typee == 2)
+		{
+			answerdouble1->numberDouble = answerdouble1->evaluate();
+			answerdouble2->numberDouble = answerdouble2->evaluate();
+			numberDouble = answerdouble1->numberDouble / answerdouble2->numberDouble;
+			return numberDouble;
+		}
+		/*setInt(answerint2.numberInt - answerint1.numberInt);
+		answerint1.set(numberInt);
+		setDouble(answerdouble2.numberDouble - answerdouble1.numberDouble);
+		answerdouble1.set(numberDouble);*/
+	}
+	void printState()
+	{
+		if(typee == 1)
+			cout<<numberInt<<endl;
+		else if(typee == 2 )
+			cout<<numberDouble<<endl;
+	}
+	TADivide (TAInt& val, TAInt& val1)
+	{
+		typee = 1;
+		answerint1 = &val;
+		answerint2 = &val1;
+		/*setInt(val1.numberInt);
+		answerint1.set(numberInt);
+		setInt(val.numberInt);
+		answerint2.set(numberInt);
+		answerdouble1.set(0.0);
+		answerdouble2.set(0.0);*/
+	}
+	TADivide (TADouble& val, TADouble& val1)
+	{
+		typee = 2;
+		answerdouble1 = &val;
+		answerdouble2 = &val1;
+		/*setDouble(val1.numberDouble);
+		answerdouble1.set(numberDouble);
+		setDouble(val.numberDouble);
+		answerdouble2.set(numberDouble);
+		answerint1.set(0);
+		answerint2.set(0);*/
+	}
+};
+//class TAPlus : public TAInt , TADouble
+//{
+//public:
+//	TAInt answerint1;
+//	TAInt answerint2;
+//	TADouble answerdouble1;
+//	TADouble answerdouble2;
+//	TAPlus (const TAInt& val, const TAInt& val1)
+//	{
+//		setInt(val1.numberInt);
+//		answerint1.set(numberInt);
+//		setInt(val.numberInt);
+//		answerint2.set(numberInt);
+//		answerdouble1.set(0.0);
+//		answerdouble2.set(0.0);
+//	}
+//	TAPlus (const TADouble& val, const TADouble& val1)
+//	{
+//		setDouble(val1.numberDouble);
+//		answerdouble1.set(numberDouble);
+//		setDouble(val.numberDouble);
+//		answerdouble2.set(numberDouble);
+//		answerint1.set(0);
+//		answerint2.set(0);
+//	}
+//	void evaluate()
+//	{
+//		setInt(answerint2.numberInt + answerint1.numberInt);
+//		answerint1.set(numberInt);
+//		setDouble(answerdouble2.numberDouble + answerdouble1.numberDouble);
+//		answerdouble1.set(numberDouble);
+//	}
+//	void printState()
+//	{
+//		if(answerint1.numberInt == 0)
+//			cout<<answerdouble1.numberDouble<<endl;
+//		else if(answerdouble1.numberDouble == 0.0)
+//			cout<<answerint1.numberInt<<endl;
+//		else
+//			cout<<"0"<<endl;
+//	}
+//};
+//class TAMultiply : public TADouble//consistent with the example only same type can take
+//{
+//public:
+//	TADouble answerdouble1;
+//	TADouble answerdouble2;
+//	TAMultiply (const TAInt& val, const TAInt& val1)
+//	{
+//		setDouble(static_cast<double>(val1.numberInt));
+//		answerdouble1.set(numberDouble);
+//		setDouble(static_cast<double>(val.numberInt));
+//		answerdouble2.set(numberDouble);
+//	}
+//	TAMultiply (const TADouble& val, const TADouble& val1)
+//	{
+//		setDouble(val1.numberDouble);
+//		answerdouble1.set(numberDouble);
+//		setDouble(val.numberDouble);
+//		answerdouble2.set(numberDouble);
+//	}
+//	void evaluate()
+//	{
+//		setDouble(answerdouble2.numberDouble * answerdouble1.numberDouble);
+//		answerdouble1.set(numberDouble);
+//	}
+//	void printState()
+//	{
+//		cout<<answerdouble1.numberDouble<<endl;
+//	}
+//};
+//class TADivide : public TADouble
+//{
+//public:
+//	TADouble answerdouble1;
+//	TADouble answerdouble2;
+//	TADivide (const TAInt& val, const TAInt& val1)
+//	{
+//		setDouble(static_cast<double>(val1.numberInt));
+//		answerdouble1.set(numberDouble);
+//		setDouble(static_cast<double>(val.numberInt));
+//		answerdouble2.set(numberDouble);
+//	}
+//	TADivide (const TADouble& val, const TADouble& val1)
+//	{
+//		setDouble(val1.numberDouble);
+//		answerdouble1.set(numberDouble);
+//		setDouble(val.numberDouble);
+//		answerdouble2.set(numberDouble);
+//	}
+//	void evaluate()
+//	{
+//		setDouble(answerdouble2.numberDouble / answerdouble1.numberDouble);
+//		answerdouble1.set(numberDouble);
+//	}
+//	void printState()
+//	{
+//		cout<<answerdouble1.numberDouble<<endl;
+//	}
+//};
+class TALessThan : public TABool
+{
+public:
+	TABool answer;
+	TALessThan (const TAInt& val, const TAInt& val1)
+	{
+		setBool( val.numberInt<val1.numberInt);
+		answer.set(number); 
+		cout<<answer.number<<endl;
+	}
+	TALessThan (const TADouble&val, const TADouble& val1)
+	{
+		setBool( val.numberDouble < val1.numberDouble);
+		answer.set(number); 
+		cout<<answer.number<<endl;
+	}
+};
+class TAMoreThan : public TABool , TAInt , TADouble
+{
+public:
+	TABool answer;
+	TAMoreThan (const TAInt& val, const TAInt& val1)
+	{
+		setBool( val.numberInt>val1.numberInt);
+		answer.set(number); 
+		cout<<answer.number<<endl;
+	}
+	TAMoreThan (const TADouble&val, const TADouble& val1)
+	{
+		setBool( val.numberDouble > val1.numberDouble);
+		answer.set(number); 
+		cout<<answer.number<<endl;
+	}
+};
+class TAEqual : public TABool , TAInt , TADouble
+{
+public:
+	TABool answer;
+	TAEqual (const TAInt& val, const TAInt& val1)
+	{
+		setBool( val.numberInt==val1.numberInt);
+		answer.set(number); 
+		cout<<answer.number<<endl;
+	}
+	TAEqual (const TADouble&val, const TADouble& val1)
+	{
+		setBool( val.numberDouble == val1.numberDouble);
+		answer.set(number); 
+		cout<<answer.number<<endl;
+	}
+};
+class big			// this is the abstract class that the primitive types inherit from however it is not finished yet
+{
+public:
+	int typeof;
+	void setType (int x)
+	{
+		typeof = x;
+	}
+};
+template <class elem, class elem1>
+class pair			//should be correct did not test it yet but i am also considering making it inherit from the 3 primitive types
+{					//and setting an int type uniquely in each of the primitive types. (trial is up)
+public:
+	elem first1;
+	elem1 second1;
+	pair(elem one, elem1 two)	//constructor 
+	{
+		first1 = one;
+		second1 = two;
+	}
+	elem first()
+	{
+		return first1;
+	}
+	elem1 second()
+	{
+		return second1;
+	}
+};
+//template <class elem>
+//class arrray
+//{
+//public:
+//	elem first1[100];
+//	int size;
+//	arrray(const elem& one[], const int& two)
+//	{
+//		first1 = one;
+//		size = two;
+//	}
+//	int sizee()
+//	{
+//		return size;
+//	}
+//	elem elementi(const int& i)
+//	{
+//		return first1[i];
+//	}
+//};
